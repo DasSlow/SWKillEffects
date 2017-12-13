@@ -1,0 +1,7 @@
+name: SWKillEffect
+version: 1.0
+main: me.nucha.swkilleffect.SWKillEffect
+commands:
+  swkilleffect:
+    permission: swkilleffect.swkilleffect
+    aliases: [swke, swkeffect]

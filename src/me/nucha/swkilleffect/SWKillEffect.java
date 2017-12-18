@@ -20,14 +20,16 @@ public class SWKillEffect extends JavaPlugin {
 	private KillEffectManager killEffectManager;
 	private FileConfiguration dataYml;
 	private GuiKillEffectSelector guiKillEffectSelector;
+	private String nmsVersion;
 
 	@Override
 	public void onEnable() {
 		instance = this;
+		loadVersion();
 		saveDefaultConfig();
 		ConfigUtil.init(this);
 		loadDataYml();
-		killEffectManager = new KillEffectManager(this);
+		killEffectManager = new KillEffectManager(this, nmsVersion);
 		Bukkit.getPluginManager().registerEvents(new KillListener(this), this);
 		Bukkit.getPluginManager().registerEvents(guiKillEffectSelector = new GuiKillEffectSelector(killEffectManager), this);
 		getCommand("swkilleffect").setExecutor(new CommandSWKillEffect(this));
@@ -36,6 +38,10 @@ public class SWKillEffect extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		killEffectManager.saveKillEffects();
+	}
+
+	public void loadVersion() {
+		nmsVersion = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
 	}
 
 	public void loadDataYml() {
@@ -85,6 +91,10 @@ public class SWKillEffect extends JavaPlugin {
 
 	public GuiKillEffectSelector getGuiKillEffectSelector() {
 		return guiKillEffectSelector;
+	}
+
+	public String getNmsVersion() {
+		return nmsVersion;
 	}
 
 }

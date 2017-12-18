@@ -1,9 +1,9 @@
-package me.nucha.swkilleffect.effects;
+package me.nucha.swkilleffect.effects.v1_8_R3;
 
 import me.nucha.swkilleffect.SWKillEffect;
+import me.nucha.swkilleffect.effects.KillEffect;
 import me.nucha.swkilleffect.utils.ConfigUtil;
 import me.nucha.swkilleffect.utils.ParticleEffect;
-import me.nucha.swkilleffect.utils.Reflection;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.MathHelper;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
@@ -124,8 +124,10 @@ public class KillEffectFinalSmash extends KillEffect {
 						FireworkMeta fm = fw.getFireworkMeta();
 						fm.addEffect(FireworkEffect.builder().flicker(true).trail(true).with(Type.BALL_LARGE).withColor(Color.RED)
 								.withFade(Color.RED).build());
-						Reflection.setValue(fm, "power", -1);
 						fw.setFireworkMeta(fm);
+						Bukkit.getScheduler().runTaskLater(SWKillEffect.getInstance(), () -> {
+							fw.detonate();
+						}, 1L);
 						cancel();
 					}
 				}

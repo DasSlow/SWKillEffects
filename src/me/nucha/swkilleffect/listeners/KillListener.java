@@ -3,24 +3,22 @@ package me.nucha.swkilleffect.listeners;
 import me.nucha.swkilleffect.SWKillEffect;
 import me.nucha.swkilleffect.effects.KillEffect;
 import me.nucha.swkilleffect.manager.KillEffectManager;
-import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand;
-import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand.EnumClientCommand;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class KillListener implements Listener {
 
 	private SWKillEffect plugin;
-	private PacketPlayInClientCommand respawnPacket;
+	private String nmsVersion;
 
 	public KillListener(SWKillEffect plugin) {
 		this.plugin = plugin;
-		this.respawnPacket = new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN);
+		this.nmsVersion = plugin.getNmsVersion();
 	}
 
 	@EventHandler
@@ -29,7 +27,7 @@ public class KillListener implements Listener {
 		KillEffectManager killEffectManager = plugin.getKillEffectManager();
 		if (p.getKiller() != null) {
 			Player k = p.getKiller();
-			KillEffect killEffect = plugin.getKillEffectManager().getKillEffect(k);
+			KillEffect killEffect = killEffectManager.getKillEffect(k);
 			if (killEffect != null) {
 				killEffect.play(p);
 			}
@@ -38,9 +36,64 @@ public class KillListener implements Listener {
 			}
 		}
 		if (killEffectManager.isAutoRespawnEnabled()) {
-			Bukkit.getScheduler().runTask(plugin, () -> {
-				((CraftPlayer) p).getHandle().playerConnection.a(respawnPacket);
-			});
+			Bukkit.getScheduler().runTask(
+					plugin,
+					() -> {
+						switch (nmsVersion) {
+						case "v1_8_R1":
+							((org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer) p).getHandle().playerConnection
+									.a(new net.minecraft.server.v1_8_R1.PacketPlayInClientCommand(
+											net.minecraft.server.v1_8_R1.EnumClientCommand.PERFORM_RESPAWN));
+							break;
+						case "v1_8_R2":
+							((org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer) p).getHandle().playerConnection
+									.a(new net.minecraft.server.v1_8_R2.PacketPlayInClientCommand(
+											net.minecraft.server.v1_8_R2.PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
+							break;
+						case "v1_8_R3":
+							((org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer) p).getHandle().playerConnection
+									.a(new net.minecraft.server.v1_8_R3.PacketPlayInClientCommand(
+											net.minecraft.server.v1_8_R3.PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
+							break;
+						case "v1_9_R1":
+							((org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer) p).getHandle().playerConnection
+									.a(new net.minecraft.server.v1_9_R1.PacketPlayInClientCommand(
+											net.minecraft.server.v1_9_R1.PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
+							break;
+						case "v1_9_R2":
+							((org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer) p).getHandle().playerConnection
+									.a(new net.minecraft.server.v1_9_R2.PacketPlayInClientCommand(
+											net.minecraft.server.v1_9_R2.PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
+							break;
+						case "v1_10_R1":
+							((org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer) p).getHandle().playerConnection
+									.a(new net.minecraft.server.v1_10_R1.PacketPlayInClientCommand(
+											net.minecraft.server.v1_10_R1.PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
+							break;
+						case "v1_11_R1":
+							((org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer) p).getHandle().playerConnection
+									.a(new net.minecraft.server.v1_11_R1.PacketPlayInClientCommand(
+											net.minecraft.server.v1_11_R1.PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
+							break;
+						case "v1_12_R1":
+							((org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer) p).getHandle().playerConnection
+									.a(new net.minecraft.server.v1_12_R1.PacketPlayInClientCommand(
+											net.minecraft.server.v1_12_R1.PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
+							break;
+						default:
+							break;
+						}
+					});
+		}
+	}
+
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event) {
+		Player p = event.getPlayer();
+		KillEffectManager killEffectManager = plugin.getKillEffectManager();
+		KillEffect killEffect = killEffectManager.getKillEffect(p);
+		if (killEffect != null) {
+			killEffect.play(p);
 		}
 	}
 

@@ -7,8 +7,6 @@ import java.util.List;
 import me.nucha.swkilleffect.SWKillEffect;
 import me.nucha.swkilleffect.effects.KillEffect;
 import me.nucha.swkilleffect.effects.KillEffectBloodExplosion;
-import me.nucha.swkilleffect.effects.KillEffectFinalSmash;
-import me.nucha.swkilleffect.effects.KillEffectHeadRocket;
 import me.nucha.swkilleffect.effects.KillEffectHeartExplosion;
 import me.nucha.swkilleffect.utils.ConfigUtil;
 
@@ -22,12 +20,47 @@ public class KillEffectManager {
 	private HashMap<String, KillEffect> killEffectMap;
 	private SWKillEffect plugin;
 
-	public KillEffectManager(SWKillEffect plugin) {
+	public KillEffectManager(SWKillEffect plugin, String nmsVersion) {
 		killEffects = new ArrayList<>();
 		registerKillEffect(new KillEffectBloodExplosion());
 		registerKillEffect(new KillEffectHeartExplosion());
-		registerKillEffect(new KillEffectHeadRocket());
-		registerKillEffect(new KillEffectFinalSmash());
+		SWKillEffect.log("NMS Version: " + nmsVersion);
+		switch (nmsVersion) {
+		case "v1_8_R1":
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_8_R1.KillEffectHeadRocket());
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_8_R1.KillEffectFinalSmash());
+			break;
+		case "v1_8_R2":
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_8_R2.KillEffectHeadRocket());
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_8_R2.KillEffectFinalSmash());
+			break;
+		case "v1_8_R3":
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_8_R3.KillEffectHeadRocket());
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_8_R3.KillEffectFinalSmash());
+			break;
+		case "v1_9_R1":
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_9_R1.KillEffectHeadRocket());
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_9_R1.KillEffectFinalSmash());
+			break;
+		case "v1_9_R2":
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_9_R2.KillEffectHeadRocket());
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_9_R2.KillEffectFinalSmash());
+			break;
+		case "v1_10_R1":
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_10_R1.KillEffectHeadRocket());
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_10_R1.KillEffectFinalSmash());
+			break;
+		case "v1_11_R1":
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_11_R1.KillEffectHeadRocket());
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_11_R1.KillEffectFinalSmash());
+			break;
+		case "v1_12_R1":
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_12_R1.KillEffectHeadRocket());
+			registerKillEffect(new me.nucha.swkilleffect.effects.v1_12_R1.KillEffectFinalSmash());
+			break;
+		default:
+			break;
+		}
 		this.plugin = plugin;
 		loadKillEffects();
 	}

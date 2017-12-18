@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 
 public class KillListener implements Listener {
 
@@ -84,16 +83,6 @@ public class KillListener implements Listener {
 							break;
 						}
 					});
-		}
-	}
-
-	@EventHandler
-	public void onInteract(PlayerInteractEvent event) {
-		Player p = event.getPlayer();
-		KillEffectManager killEffectManager = plugin.getKillEffectManager();
-		KillEffect killEffect = killEffectManager.getKillEffect(p);
-		if (killEffect != null) {
-			killEffect.play(p);
 		}
 	}
 

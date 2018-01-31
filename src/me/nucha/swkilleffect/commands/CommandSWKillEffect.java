@@ -48,7 +48,6 @@ public class CommandSWKillEffect implements CommandExecutor {
 		}
 		sender.sendMessage(prefix + "§a------------ §cSWKillEffect §aby §eNucha §a------------");
 		sender.sendMessage(prefix + "§a/swke gui [player] §2--- §bOpen Kill Effect selector");
-		sender.sendMessage(prefix + "§a/swke reload §2--- §bReloads config.yml");
 		return true;
 	}
 
